@@ -49,10 +49,10 @@ The public key is committed in `src-tauri/tauri.conf.json` and is used by the up
 
 ## Re-running a release
 
-The workflow has a manual `workflow_dispatch` trigger. Use the GitHub Actions UI or:
+The workflow has a manual `workflow_dispatch` trigger. Run it from `main` and pass the release tag; this matters when rebuilding an older tag with a newer workflow:
 
 ```bash
-gh workflow run release.yml -R codeverta/vault.codeverta.com --ref vX.Y.Z
+gh workflow run release.yml -R codeverta/vault.codeverta.com --ref main -f release_tag=vX.Y.Z
 ```
 
 This is useful after adding signing secrets or recovering a failed platform build. Do not create a second tag for the same version.
