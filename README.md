@@ -62,13 +62,23 @@ On first launch, create a master password with at least 10 characters. The vault
 
 ## Installation
 
+### Download a release
+
+Download the latest installer from the [GitHub Releases page](https://github.com/codeverta/vault.codeverta.com/releases). Vault release builds are produced for:
+
+| Platform | Artifact |
+| --- | --- |
+| macOS Apple Silicon | `.dmg` and `.app.tar.gz` |
+| Linux x64 | `.AppImage` and `.deb` |
+| Windows x64 | `.msi` and `.exe` |
+
 ### Build a production app
 
 ```bash
 npm run tauri build
 ```
 
-Bundled installers are written to `src-tauri/target/release/bundle/`. On macOS Apple Silicon, this produces `Vault_0.1.0_aarch64.dmg` and `Vault.app`.
+Bundled installers are written to `src-tauri/target/release/bundle/`. The GitHub release workflow builds macOS, Linux, and Windows artifacts in parallel.
 
 ### Frontend-only checks
 
@@ -101,11 +111,12 @@ src/                 React + TypeScript interface
 src-tauri/src/       Rust commands, encryption, and SQLite storage
 src-tauri/icons/     Application icon assets
 .github/workflows/   Continuous integration checks
+docs/                Developer and release documentation
 ```
 
 ## Contributing
 
-Bug reports and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change. Never include real credentials, tokens, private keys, or `.vault` backups in an issue or pull request.
+Bug reports and pull requests are welcome. Start with the [developer documentation](docs/DEVELOPMENT.md) and read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change. The [release guide](docs/RELEASING.md) covers versioning and publishing. Never include real credentials, tokens, private keys, or `.vault` backups in an issue or pull request.
 
 For security issues, please follow [SECURITY.md](SECURITY.md) rather than opening a public issue.
 
