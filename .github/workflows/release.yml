@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -29,6 +30,17 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: Vault ${{ github.ref_name }}
-          releaseBody: See RELEASE_NOTES_v1.0.0.md for the full changelog.
+          releaseBody: |
+            The first stable release of Vault: a secure, offline-first desktop vault for secrets and sensitive text.
+
+            Highlights:
+            - Argon2id master key derivation and AES-256-GCM encryption for every stored item.
+            - API keys, passwords, tokens, SSH keys, recovery codes, notes, JSON, and .env data.
+            - Search, categories, tags, favorites, reveal/hide, copy, edit, and delete.
+            - Password-protected .vault export/import for device migration.
+            - Five-minute auto-lock and 30-second clipboard cleanup after copying a secret.
+            - Signed Tauri artifacts and updater metadata when signing secrets are configured.
+
+            Full notes: RELEASE_NOTES_v1.0.0.md
           releaseDraft: false
           prerelease: false
