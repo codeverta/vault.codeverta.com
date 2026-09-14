@@ -8,7 +8,7 @@
 
 Secure local vault for API keys, passwords, tokens, SSH keys, notes, JSON, `.env` files, and any other sensitive text.
 
-[![CI](https://github.com/codeverta/vault/actions/workflows/ci.yml/badge.svg)](https://github.com/codeverta/vault/actions/workflows/ci.yml)
+[![CI](https://github.com/codeverta/vault.codeverta.com/actions/workflows/ci.yml/badge.svg)](https://github.com/codeverta/vault.codeverta.com/actions/workflows/ci.yml)
 [![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/)
 [![Rust](https://img.shields.io/badge/Rust-backend-000000?logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![Offline](https://img.shields.io/badge/network-100%25%20offline-7C3AED)](#security)
@@ -52,7 +52,7 @@ Vault uses application-layer encryption so the SQLite database contains encrypte
 ### Development
 
 ```bash
-git clone https://github.com/codeverta/vault.git
+git clone https://github.com/codeverta/vault.codeverta.com.git
 cd vault
 npm install
 npm run tauri dev
