@@ -53,7 +53,7 @@ Vault uses application-layer encryption so the SQLite database contains encrypte
 
 ```bash
 git clone https://github.com/codeverta/vault.codeverta.com.git
-cd vault
+cd vault.codeverta.com
 npm install
 npm run tauri dev
 ```
