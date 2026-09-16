@@ -19,7 +19,7 @@ printf '%s' "$KEY_PASSWORD" | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD -
 unset KEY_PASSWORD
 ```
 
-The public key is committed in `src-tauri/tauri.conf.json` and is used by the updater to verify signatures.
+The public key is committed in `src-tauri/tauri.conf.json` and is used by the updater to verify signatures. A signed release must publish `latest.json` and the matching `.sig` files; without those files the in-app updater quietly reports that no update is available.
 
 ## Publish a new version
 
@@ -46,6 +46,10 @@ The public key is committed in `src-tauri/tauri.conf.json` and is used by the up
    ```
 
 5. Verify the workflow is green and the release contains macOS `.dmg`, Linux `.AppImage`/`.deb`, Windows `.msi`/`.exe`, and updater signature files when signing secrets are configured.
+
+## How users update
+
+Users do not need to download a binary manually. After a signed release is published, they open Vault and click the **Update vX.Y.Z** button in the sidebar. Vault downloads the platform-specific artifact, verifies its signature, installs it, and relaunches the app.
 
 ## Publish from the existing workspace
 

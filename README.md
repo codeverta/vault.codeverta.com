@@ -24,6 +24,7 @@ Vault is a desktop-first, zero-cloud secret manager. Your data is encrypted loca
 - Search, filter, tag, favorite, copy, reveal, edit, and delete entries from a focused desktop interface.
 - Export the entire vault to a password-protected `.vault` backup and import it on another device.
 - Auto-locks after five minutes of inactivity and clears copied secrets from the clipboard after 30 seconds.
+- Checks for signed updates in-app and lets you download, install, and restart from one click.
 - Cross-platform Tauri shell with a Rust security boundary and a React + TypeScript UI.
 
 ## Security
@@ -109,6 +110,10 @@ See the [release guide](docs/RELEASING.md) for signing setup and the complete wo
 4. Create or unlock Vault on the new device, then import the backup with its backup password.
 
 The backup password is separate from the master password. Vault never uploads or syncs this file.
+
+## In-app updates
+
+When a newer signed release is available, Vault shows an **Update** button in the sidebar. Click it once to download, verify, install, and restart the application. No manual binary download is needed. Updates are verified against the public key bundled in the application.
 
 ## Project structure
 
