@@ -95,6 +95,12 @@ cargo test --manifest-path src-tauri/Cargo.toml
 cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
 ```
 
+### Publish without cloning again
+
+From this existing workspace, `npm run release:local` builds the current platform and uploads the installers to GitHub Releases. To build macOS, Linux, and Windows in GitHub Actions without downloading the repository yourself, run `npm run release:ci`.
+
+See the [release guide](docs/RELEASING.md) for signing setup and the complete workflow.
+
 ## Backup and migration
 
 1. Open **Settings → Export & import**.

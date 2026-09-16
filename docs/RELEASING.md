@@ -47,6 +47,38 @@ The public key is committed in `src-tauri/tauri.conf.json` and is used by the up
 
 5. Verify the workflow is green and the release contains macOS `.dmg`, Linux `.AppImage`/`.deb`, Windows `.msi`/`.exe`, and updater signature files when signing secrets are configured.
 
+## Publish from the existing workspace
+
+You do not need to clone or download the repository again. Run these commands from the workspace that already contains Vault:
+
+```bash
+npm run release:local
+npm run release:ci
+```
+
+`release:local` builds the current operating system and uploads its installers to GitHub Releases. `release:ci` asks GitHub Actions to build macOS, Linux, and Windows from the current `main` branch.
+
+Both commands derive the tag from the version in `package.json`. To target a specific version explicitly:
+
+```bash
+npm run release:local -- --tag=v1.0.0
+npm run release:ci -- --tag=v1.0.0
+```
+
+`release:local` requires `gh auth login` and publishes only artifacts available on the current machine. `release:ci` requires the signing secrets in the repository and lets GitHub's runners build all three desktop platforms.
+
+For a signed local build, export the encrypted key and its passphrase only in the current shell before running `release:local`:
+
+```bash
+export TAURI_SIGNING_PRIVATE_KEY="$(< .tauri/codeverta-erp.key)"
+read -rsp "Signing key password: " KEY_PASSWORD
+export TAURI_SIGNING_PRIVATE_KEY_PASSWORD="$KEY_PASSWORD"
+npm run release:local
+unset TAURI_SIGNING_PRIVATE_KEY TAURI_SIGNING_PRIVATE_KEY_PASSWORD KEY_PASSWORD
+```
+
+The private key is read from the existing local file and is never written to the repository by this workflow.
+
 ## Re-running a release
 
 The workflow has a manual `workflow_dispatch` trigger. Run it from `main` and pass the release tag; this matters when rebuilding an older tag with a newer workflow:
