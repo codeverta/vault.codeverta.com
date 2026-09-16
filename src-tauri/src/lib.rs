@@ -8,8 +8,7 @@ use rand::{rngs::OsRng, RngCore};
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf, sync::Mutex};
-use tauri::{AppHandle, Manager, State};
-use tauri_plugin_dialog::DialogExt;
+use tauri::{Manager, State};
 use uuid::Uuid;
 use zeroize::{Zeroize, Zeroizing};
 
@@ -287,9 +286,9 @@ fn delete_item(id: String, state: State<VaultState>) -> Result<(), String> {
 #[tauri::command]
 fn export_vault(
     password: String,
-    app: AppHandle,
+    path: String,
     state: State<VaultState>,
-) -> Result<Option<String>, String> {
+) -> Result<String, String> {
     if password.len() < 6 {
         return Err("Password backup minimal 6 karakter".into());
     }
@@ -306,42 +305,21 @@ fn export_vault(
         nonce: blob.nonce,
         ciphertext: blob.ciphertext,
     };
-    let path = app
-        .dialog()
-        .file()
-        .set_title("Export Vault")
-        .set_file_name("vault-backup.vault")
-        .add_filter("Vault backup", &["vault"])
-        .blocking_save_file();
-    match path {
-        Some(p) => {
-            let pb = p.into_path().map_err(|_| "Lokasi file tidak valid")?;
-            fs::write(
-                &pb,
-                serde_json::to_vec_pretty(&backup).map_err(|e| e.to_string())?,
-            )
-            .map_err(|e| e.to_string())?;
-            Ok(Some(pb.to_string_lossy().into_owned()))
-        }
-        None => Ok(None),
+    let mut output = PathBuf::from(path);
+    if output.extension().is_none() {
+        output.set_extension("vault");
     }
+    fs::write(
+        &output,
+        serde_json::to_vec_pretty(&backup).map_err(|e| e.to_string())?,
+    )
+    .map_err(|e| e.to_string())?;
+    Ok(output.to_string_lossy().into_owned())
 }
 
 #[tauri::command]
-fn import_vault(
-    password: String,
-    app: AppHandle,
-    state: State<VaultState>,
-) -> Result<Option<usize>, String> {
-    let path = app
-        .dialog()
-        .file()
-        .set_title("Import Vault")
-        .add_filter("Vault backup", &["vault"])
-        .blocking_pick_file();
-    let Some(path) = path else { return Ok(None) };
-    let pb = path.into_path().map_err(|_| "Lokasi file tidak valid")?;
-    let backup: BackupFile = serde_json::from_slice(&fs::read(pb).map_err(|e| e.to_string())?)
+fn import_vault(password: String, path: String, state: State<VaultState>) -> Result<usize, String> {
+    let backup: BackupFile = serde_json::from_slice(&fs::read(path).map_err(|e| e.to_string())?)
         .map_err(|_| "Format backup tidak valid")?;
     if backup.magic != EXPORT_MAGIC {
         return Err("File ini bukan backup Vault yang valid".into());
@@ -383,7 +361,7 @@ fn import_vault(
         .map_err(|e| e.to_string())?;
     }
     tx.commit().map_err(|e| e.to_string())?;
-    Ok(Some(items.len()))
+    Ok(items.len())
 }
 
 #[tauri::command]

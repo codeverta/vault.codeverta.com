@@ -9,7 +9,7 @@ export const api = {
   list: () => invoke<VaultItem[]>("list_items"),
   save: (item: ItemDraft & { id?: string }) => invoke<VaultItem>("save_item", { item }),
   remove: (id: string) => invoke<void>("delete_item", { id }),
-  exportVault: (password: string) => invoke<string | null>("export_vault", { password }),
-  importVault: (password: string) => invoke<number | null>("import_vault", { password }),
+  exportVault: (password: string, path: string) => invoke<string>("export_vault", { password, path }),
+  importVault: (password: string, path: string) => invoke<number>("import_vault", { password, path }),
   changePassword: (currentPassword: string, newPassword: string) => invoke<void>("change_master_password", { currentPassword, newPassword })
 };
